@@ -71,7 +71,8 @@ class BitmapUtils {
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
 
-        return BitmapFactory.decodeFile(imagePath);
+        return BitmapFactory.decodeFile(imagePath, bmOptions); // I added bmOptions as the second param
+//        return BitmapFactory.decodeFile(imagePath); //this is original
     }
 
     /**
@@ -148,8 +149,10 @@ class BitmapUtils {
         File storageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                         + "/Emojify");
-        boolean success = true;
-        if (!storageDir.exists()) {
+//        boolean success = true;
+//        if (!storageDir.exists()) {
+        boolean success = storageDir.exists();
+        if (!success){
             success = storageDir.mkdirs();
         }
 
