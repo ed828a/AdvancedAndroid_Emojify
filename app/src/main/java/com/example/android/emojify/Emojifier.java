@@ -54,15 +54,44 @@ class Emojifier {
         Log.d(LOG_TAG, "detectFaces: number of faces = " + faces.size());
 
         // If there are no faces detected, show a Toast message
-        if(faces.size() == 0){
+        if (faces.size() == 0) {
             Toast.makeText(context, R.string.no_faces_message, Toast.LENGTH_SHORT).show();
+
+        } else {
+
+            // TODO (2): Iterate through the faces, calling getClassifications() for each face.
+            for (int i = 0; i < faces.size(); i++) {
+                Face face = faces.valueAt(i);
+                getClassifications(face);
+            }
         }
-
-        // TODO (2): Iterate through the faces, calling getClassifications() for each face.
-
         // Release the detector
         detector.release();
+
     }
 
     // TODO (1): Create a static method called getClassifications() which logs the probability of each eye being open and that the person is smiling.
+    static void getClassifications(Face face) {
+        float smilingProbability;
+        float leftEysOpenProbability;
+        float rightEyeOpenProbablitiy;
+        float eulerY;
+        float eulerZ;
+        int faceId;
+
+        smilingProbability = face.getIsSmilingProbability();
+        leftEysOpenProbability = face.getIsLeftEyeOpenProbability();
+        rightEyeOpenProbablitiy = face.getIsRightEyeOpenProbability();
+        eulerY = face.getEulerY();
+        eulerZ = face.getEulerZ();
+        faceId = face.getId();
+
+        Log.v(LOG_TAG, "Smililng: " + smilingProbability);
+        Log.v(LOG_TAG, "Left Eye Open: " + leftEysOpenProbability);
+        Log.v(LOG_TAG, "Right Eye Open: " + rightEyeOpenProbablitiy);
+        Log.v(LOG_TAG, "Euler Y: " + eulerY);
+        Log.v(LOG_TAG, "Euler Z: " + eulerZ);
+        Log.v(LOG_TAG, "Face ID: " + faceId);
+
+    }
 }
