@@ -24,7 +24,9 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.widget.Toast;
 
+import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Frame;
+import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.face.Face;
 import com.google.android.gms.vision.face.FaceDetector;
 
@@ -35,6 +37,12 @@ class Emojifier {
     private static final float EMOJI_SCALE_FACTOR = .9f;
     private static final double SMILING_PROB_THRESHOLD = .15;
     private static final double EYE_OPEN_PROB_THRESHOLD = .5;
+
+    private static CameraSource mCameraSource = null;
+
+    public CameraSource getmCameraSource() {
+        return mCameraSource;
+    }
 
     /**
      * Method for detecting faces in a bitmap.
@@ -51,6 +59,16 @@ class Emojifier {
         FaceDetector detector = new FaceDetector.Builder(context)
                 .setTrackingEnabled(false)
                 .setClassificationType(FaceDetector.ALL_CLASSIFICATIONS)
+                .build();
+
+        if (!detector.isOperational()){
+            Log.v(LOG_TAG, "Face detector dependencies are not yet available.");
+        }
+
+        mCameraSource = new CameraSource.Builder(context, detector)
+                .setRequestedPreviewSize(640, 480)
+                .setFacing(CameraSource.CAMERA_FACING_FRONT)
+                .setRequestedFps(30.0f)
                 .build();
 
         // Build the frame
